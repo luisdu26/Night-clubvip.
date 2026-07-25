@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin VIP - NIGHT CLUB VIP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --void:#0a0710;
+  --void-2:#150c1e;
+  --card:#1c1224;
+  --card-line:rgba(217,178,106,.18);
+  --gold:#d9b26a;
+  --gold-bright:#f2dfae;
+  --rose:#e23e82;
+  --rose-deep:#a01f56;
+  --text:#f4ede7;
+  --muted:#b7a9bd;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:'Manrope',sans-serif;
+  min-height:100vh;
+}
+
+@keyframes fadeUpIn{
+  from{ opacity:0; transform:translateY(20px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes shake{
+  0%,100%{ transform:translateX(0); }
+  20%{ transform:translateX(-8px); }
+  40%{ transform:translateX(7px); }
+  60%{ transform:translateX(-5px); }
+  80%{ transform:translateX(4px); }
+}
+
+@keyframes pulseGold{
+  0%,100%{ box-shadow:0 0 0 0 rgba(240,192,74,.35); }
+  50%{ box-shadow:0 0 0 5px rgba(240,192,74,0); }
+}
+
+@keyframes spinFade{
+  from{ opacity:.3; transform:rotate(0deg); }
+  to{ opacity:1; transform:rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+h1{
+  text-align:center;
+  padding:52px 20px 8px;
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;
+  font-style:italic;
+  font-size:42px;
+  color:var(--gold-bright);
+  text-shadow:0 0 24px rgba(217,178,106,.3);
+  opacity:0;
+  animation:fadeUpIn .7s ease forwards;
+}
+
+.h1-sub{
+  text-align:center;
+  font-size:12px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding-bottom:40px;
+  opacity:0;
+  animation:fadeUpIn .7s ease forwards .1s;
+}
+
+/* LOGIN */
+
+#login{
+  max-width:400px;
+  margin:60px auto;
+  padding:44px 36px;
+  background:var(--card);
+  border:1px solid var(--card-line);
+  text-align:center;
+  opacity:0;
+  animation:fadeUpIn .7s ease forwards .2s;
+}
+
+#login.shake{ animation:shake .4s ease; }
+
+#login p{ color:var(--muted); font-size:14px; margin-bottom:10px; }
+
+#login input{
+  width:100%;
+  padding:15px 18px;
+  margin:18px 0;
+  border-radius:2px;
+  border:1px solid rgba(217,178,106,.35);
+  background:var(--void-2);
+  color:var(--text);
+  font-size:15px;
+  font-family:'Manrope',sans-serif;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+
+#login input::placeholder{ color:#7d7285; }
+
+#login input:focus{
+  outline:none;
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(217,178,106,.12);
+}
+
+#login button{
+  padding:15px 40px;
+  background:linear-gradient(120deg, var(--rose), var(--rose-deep));
+  border:none;
+  border-radius:2px;
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:filter .2s ease, transform .15s ease;
+}
+
+#login button:hover{ filter:brightness(1.12); transform:translateY(-2px); }
+#login button:active{ transform:translateY(0); }
+
+#loginError{
+  color:#ff6b7a;
+  margin-top:16px;
+  min-height:20px;
+  font-size:13px;
+}
+
+/* PANEL */
+
+#panel{
+  display:none;
+  max-width:920px;
+  margin:0 auto;
+  padding:10px 20px 70px;
+}
+
+#panel.panel-in{ display:block; animation:fadeUpIn .5s ease; }
+
+.vip-card{
+  background:var(--card);
+  border:1px solid var(--card-line);
+  border-left:2px solid var(--gold);
+  padding:26px 28px;
+  margin-bottom:18px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  opacity:0;
+  animation:fadeUpIn .5s ease forwards;
+  transition:border-color .2s ease, transform .2s ease;
+}
+
+.vip-card:hover{
+  border-color:rgba(217,178,106,.45);
+  transform:translateY(-3px);
+}
+
+.vip-info h3{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;
+  font-size:22px;
+  color:var(--gold-bright);
+  margin:6px 0 4px;
+}
+
+.vip-info p{
+  opacity:.8;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.statut{
+  display:inline-block;
+  font-weight:700;
+  padding:6px 16px;
+  border-radius:20px;
+  font-size:11.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  margin-top:8px;
+}
+
+.statut.en_attente{ background:#443300; color:#f0c04a; animation:pulseGold 1.8s ease-in-out infinite; }
+.statut.accepte{ background:#0c3320; color:#4ee8a0; }
+.statut.refuse{ background:#3a0c1c; color:#ff6b8f; }
+.statut.annule{ background:#332310; color:#e0a860; }
+.statut.validee{ background:#152a3a; color:#7ec8f0; }
+
+.vip-actions{ display:flex; flex-wrap:wrap; gap:10px; }
+
+.vip-actions button{
+  padding:10px 20px;
+  border:none;
+  border-radius:2px;
+  color:#fff;
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:filter .2s ease, transform .15s ease;
+}
+
+.vip-actions button:hover{ filter:brightness(1.15); transform:translateY(-2px); }
+.vip-actions button:active{ transform:translateY(0); }
+
+.btn-accept{ background:#1a7a4d; }
+.btn-refuse{ background:var(--rose-deep); }
+.btn-cancel{ background:#6b4a1a; }
+.btn-minus{ background:#332a3d; }
+.btn-finish{ background:#2a5a8a; }
+.btn-switch{ background:#5b2e91; }
+
+.type-badge{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.type-badge.normal{ background:#241a2b; color:var(--muted); }
+.type-badge.vip{ background:#3a0f33; color:#ff8ade; }
+
+.changements{
+  font-size:13px;
+  color:var(--gold);
+  opacity:.9;
+  margin-top:8px;
+}
+
+#empty{
+  text-align:center;
+  opacity:.6;
+  padding:70px 20px;
+  font-size:14px;
+  color:var(--muted);
+  animation:fadeUpIn .5s ease;
+}
+
+
+.btn-delete{
+  background:transparent;
+  color:#ff6b7a;
+  border:1px solid rgba(255,107,122,.4);
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s ease, color .2s ease, transform .15s ease;
+  padding:0;
+  margin-left:6px;
+  flex-shrink:0;
+}
+.btn-delete:hover{
+  background:rgba(255,107,122,.18);
+  color:#ff3b4f;
+  transform:scale(1.12);
+}
+.btn-delete:active{ transform:scale(0.95); }
+
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  padding:14px 22px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:600;
+  color:#fff;
+  z-index:9999;
+  animation:fadeUpIn .3s ease;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.toast.ok{ background:#1a7a4d; }
+.toast.err{ background:#a01f56; }
+
+</style>
+</head>
+
+<body>
+
+<h1>Admin réservations</h1>
+<p class="h1-sub">Night Club VIP</p>
+
+<div id="login">
+<p>Entre le mot de passe pour voir les réservations.</p>
+<input type="password" id="pwdInput" placeholder="Mot de passe">
+<br>
+<button onclick="checkPassword()">Entrer</button>
+<p id="loginError"></p>
+</div>
+
+<div id="panel">
+<div id="list"></div>
+<p id="empty" style="display:none;">Aucune réservation pour le moment.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+
+const SUPABASE_URL = "https://zljtlfhqrvqzhyxaeoru.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ScZ3GJ8XKa7luKwx8RwD8g_hjAn9Zwp";
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const EMAILJS_SERVICE_ID = "service_tmjvct3";
+const EMAILJS_TEMPLATE_ID = "template_lcateej";
+const EMAILJS_PUBLIC_KEY = "gem9kvt6rLbeREk8j";
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+function envoyerEmail(contact, nom, message){
+  if(!contact){ alert("Pas d'email pour cette personne."); return; }
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    to_email: contact,
+    to_name: nom,
+    message: message
+  }).then(() => {
+    alert("Email envoyé à " + contact);
+  }).catch((err) => {
+    alert("Erreur email : " + JSON.stringify(err));
+    console.error('Erreur email:', err);
+  });
+}
+
+// Écris ton mot de passe ici, ENTRE LES GUILLEMETS (ex: "Luisdu26").
+const ADMIN_PASSWORD = "Luisdu26";
+
+function checkPassword(){
+  const input = document.getElementById('pwdInput').value;
+  const err = document.getElementById('loginError');
+  const loginBox = document.getElementById('login');
+
+  if(input === ADMIN_PASSWORD){
+    loginBox.style.display = 'none';
+    const panel = document.getElementById('panel');
+    panel.style.display = 'block';
+    panel.classList.add('panel-in');
+    loadList();
+  } else {
+    err.textContent = "Mot de passe incorrect.";
+    loginBox.classList.remove('shake');
+    void loginBox.offsetWidth;
+    loginBox.classList.add('shake');
+  }
+}
+
+document.getElementById('pwdInput').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') checkPassword();
+});
+
+function statutLabel(s){
+  if(s === 'accepte') return 'VIP accepté';
+  if(s === 'refuse') return 'VIP refusé';
+  if(s === 'annule') return 'VIP annulé';
+  if(s === 'validee') return 'Confirmée';
+  return 'En attente de validation';
+}
+
+async function loadList(){
+  const { data, error } = await client.from('vip_signus').select('*').order('created_at', { ascending: false });
+
+  const list = document.getElementById('list');
+  const empty = document.getElementById('empty');
+  list.innerHTML = '';
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  if(!data || data.length === 0){
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  data.forEach((d, i) => {
+    const statut = d.statut || 'en_attente';
+    const date = d.created_at ? new Date(d.created_at).toLocaleString('fr-FR') : '';
+
+    const card = document.createElement('div');
+    card.className = 'vip-card';
+    card.style.animationDelay = (i * 60) + 'ms';
+
+    const info = document.createElement('div');
+    info.className = 'vip-info';
+
+    const badge = document.createElement('span');
+    badge.className = `type-badge ${d.type || 'normal'}`;
+    badge.textContent = d.type === 'vip' ? 'VIP' : 'Normal';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = d.nom || '';
+
+    const p = document.createElement('p');
+    p.textContent = date;
+
+    const span = document.createElement('span');
+    span.className = `statut ${statut}`;
+    span.textContent = statutLabel(statut);
+
+    info.appendChild(badge);
+    info.appendChild(h3);
+    info.appendChild(p);
+    info.appendChild(span);
+
+    if(d.type === 'vip' && statut === 'accepte'){
+      const changements = document.createElement('p');
+      changements.className = 'changements';
+      changements.textContent = `Changements de musique restants : ${d.changements}`;
+      info.appendChild(changements);
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'vip-actions';
+
+    if(d.type === 'vip' && statut === 'en_attente'){
+      const btnAccept = document.createElement('button');
+      btnAccept.className = 'btn-accept';
+      btnAccept.textContent = 'Accepter';
+      btnAccept.onclick = () => updateStatut(d.id, 'accepte', d.contact, d.nom);
+
+      const btnRefuse = document.createElement('button');
+      btnRefuse.className = 'btn-refuse';
+      btnRefuse.textContent = 'Refuser';
+      btnRefuse.onclick = () => updateStatut(d.id, 'refuse', d.contact, d.nom);
+
+      actions.appendChild(btnAccept);
+      actions.appendChild(btnRefuse);
+    }
+
+    if(d.type === 'vip' && statut === 'accepte'){
+      const btnMinus = document.createElement('button');
+      btnMinus.className = 'btn-minus';
+      btnMinus.textContent = '-1 changement';
+      btnMinus.onclick = () => decrementChangement(d.id, d.changements);
+
+      const btnCancel = document.createElement('button');
+      btnCancel.className = 'btn-cancel';
+      btnCancel.textContent = 'Annuler le VIP';
+      btnCancel.onclick = () => updateStatut(d.id, 'annule', d.contact, d.nom);
+
+      actions.appendChild(btnMinus);
+      actions.appendChild(btnCancel);
+    }
+
+    // Bouton changer de type (Normal <-> VIP) — TOUJOURS visible
+    const btnSwitch = document.createElement('button');
+    btnSwitch.className = 'btn-switch';
+    btnSwitch.textContent = d.type === 'vip' ? 'Repasser en Normal' : 'Passer en VIP';
+    btnSwitch.onclick = () => changerType(d.id, d.type, d.nom, d.contact);
+    actions.appendChild(btnSwitch);
+
+    // Bouton Terminer — TOUJOURS visible (VIP et Normal)
+    const btnFinish = document.createElement('button');
+    btnFinish.className = 'btn-finish';
+    btnFinish.textContent = 'Terminer';
+    btnFinish.onclick = () => finirReservation(d.id, d.nom, d.contact, d.type);
+    actions.appendChild(btnFinish);
+
+    // Bouton supprimer (croix) — TOUJOURS visible
+    const btnDelete = document.createElement('button');
+    btnDelete.className = 'btn-delete';
+    btnDelete.innerHTML = '&times;';
+    btnDelete.title = 'Supprimer cette réservation';
+    btnDelete.onclick = () => deleteReservation(d.id, d.nom);
+    actions.appendChild(btnDelete);
+
+    card.appendChild(info);
+    card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+async function updateStatut(id, statut, contact, nom){
+  await client.from('vip_signus').update({ statut: statut }).eq('id', id);
+
+  let message = '';
+  if(statut === 'accepte'){ message = 'Bonne nouvelle : ta demande de table VIP a été acceptée ! 5 boissons offertes, 3 changements de musique inclus, service client et karaoké.'; }
+  if(statut === 'refuse'){ message = "Ta demande de table VIP a malheureusement été refusée."; }
+  if(statut === 'annule'){ message = "Ton statut VIP a été annulé."; }
+
+  if(message){ envoyerEmail(contact, nom, message); }
+
+  loadList();
+}
+
+async function decrementChangement(id, current){
+  const next = current > 0 ? current - 1 : 0;
+  await client.from('vip_signus').update({ changements: next }).eq('id', id);
+  loadList();
+}
+
+function showToast(msg, type){
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type === 'ok' ? 'ok' : 'err');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .4s'; setTimeout(()=>t.remove(),400); }, 3000);
+}
+
+async function changerType(id, currentType, nom, contact){
+  const newType = currentType === 'vip' ? 'normal' : 'vip';
+
+  const montantMsg = newType === 'vip'
+    ? "Ce client passe en VIP : il doit te payer 4,50€ de plus."
+    : "Ce client repasse en Normal : tu dois lui rendre 4,50€.";
+
+  if(!confirm(`Faire passer ${nom || 'ce client'} en ${newType.toUpperCase()} ?\n\n${montantMsg}`)) return;
+
+  const updates = { type: newType };
+  if(newType === 'vip'){
+    updates.statut = 'accepte';
+    updates.changements = 3;
+  } else {
+    updates.statut = 'validee';
+    updates.changements = null;
+  }
+
+  const { error } = await client.from('vip_signus').update(updates).eq('id', id);
+
+  if(error){
+    showToast('Erreur : ' + error.message, 'err');
+    console.error('[CHANGER TYPE] Erreur:', error);
+    return;
+  }
+
+  const emailMsg = newType === 'vip'
+    ? "Rebonjour, juste pour vous dire que vous êtes passé VIP comme vous le vouliez. Vous me devez 4,50€."
+    : "Rebonjour, juste pour vous dire que vous êtes passé normal comme vous le vouliez. Je vous dois 4,50€.";
+  envoyerEmail(contact, nom, emailMsg);
+
+  showToast((nom || 'Ce client') + ' est maintenant ' + newType.toUpperCase() + '.', 'ok');
+  loadList();
+}
+
+async function finirReservation(id, nom, contact, type){
+  if(!id){ showToast('ID manquant, impossible de terminer.', 'err'); return; }
+  const typeLabel = type === 'vip' ? 'VIP' : 'normal';
+  if(!confirm('Terminer la soirée pour "' + (nom || 'Inconnu') + '" (' + typeLabel + ') ?\nLa réservation sera supprimée et un email sera envoyé.')) return;
+
+  const { data, error } = await client.from('vip_signus').delete().eq('id', id).select();
+
+  if(error){
+    showToast('Erreur Supabase : ' + error.message, 'err');
+    console.error('[FINIR] Erreur:', error);
+    return;
+  }
+
+  if(!data || data.length === 0){
+    showToast('Aucune ligne supprimée (ID introuvable ou droits insuffisants).', 'err');
+    return;
+  }
+
+  const message = "La soirée disco est terminée, merci d'avoir participé en tant que " + typeLabel + " !";
+  envoyerEmail(contact, nom, message);
+
+  showToast('Soirée terminée pour ' + (nom || 'ce client') + '.', 'ok');
+  loadList();
+}
+
+async function deleteReservation(id, nom){
+  console.log('[DELETE] ID:', id, '| Nom:', nom);
+  if(!id){ showToast('ID manquant, impossible de supprimer.', 'err'); return; }
+  if(!confirm('Supprimer la réservation de "' + (nom || 'Inconnu') + '" ?\nCette action est irréversible.')) return;
+
+  const { data, error } = await client.from('vip_signus').delete().eq('id', id).select();
+
+  console.log('[DELETE] Réponse Supabase:', { data, error });
+
+  if(error){
+    showToast('Erreur Supabase : ' + error.message, 'err');
+    console.error('[DELETE] Erreur:', error);
+    return;
+  }
+
+  if(!data || data.length === 0){
+    showToast('Aucune ligne supprimée (ID introuvable ou droits insuffisants).', 'err');
+    console.warn('[DELETE] Aucune donnée retournée — vérifie les RLS policies dans Supabase.');
+    return;
+  }
+
+  showToast('Réservation supprimée avec succès !', 'ok');
+  loadList();
+}
+
+</script>
+
+</body>
+
+</html>
